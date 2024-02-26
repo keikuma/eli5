@@ -4,7 +4,7 @@ from typing import List
 
 import numpy as np
 from sklearn.model_selection import check_cv
-from sklearn.utils.metaestimators import if_delegate_has_method
+from sklearn.utils.metaestimators import available_if
 from sklearn.utils import check_array, check_random_state
 from sklearn.base import (
     BaseEstimator,
@@ -21,20 +21,20 @@ if pandas_available:
     import pandas as pd
 
 CAVEATS_CV_NONE = """
-Feature importances are computed on the same data as used for training, 
-i.e. feature importances don't reflect importance of features for 
+Feature importances are computed on the same data as used for training,
+i.e. feature importances don't reflect importance of features for
 generalization.
 """
 
 CAVEATS_CV = """
-Feature importances are not computed for the final estimator; 
-they are computed for a sequence of estimators trained and evaluated 
-on train/test splits. So they tell you about importances of features 
+Feature importances are not computed for the final estimator;
+they are computed for a sequence of estimators trained and evaluated
+on train/test splits. So they tell you about importances of features
 for generalization, but not feature importances of a particular trained model.
 """
 
 CAVEATS_PREFIT = """
-If feature importances are computed on the same data as used for training, 
+If feature importances are computed on the same data as used for training,
 they don't reflect importance of features for generalization. Use a held-out
 dataset if you want generalization feature importances.
 """
@@ -247,23 +247,23 @@ class PermutationImportance(BaseEstimator, MetaEstimatorMixin):
 
     # ============= Exposed methods of a wrapped estimator:
 
-    @if_delegate_has_method(delegate='wrapped_estimator_')
+    @available_if('wrapped_estimator_')
     def score(self, X, y=None, *args, **kwargs):
         return self.wrapped_estimator_.score(X, y, *args, **kwargs)
 
-    @if_delegate_has_method(delegate='wrapped_estimator_')
+    @available_if('wrapped_estimator_')
     def predict(self, X):
         return self.wrapped_estimator_.predict(X)
 
-    @if_delegate_has_method(delegate='wrapped_estimator_')
+    @available_if('wrapped_estimator_')
     def predict_proba(self, X):
         return self.wrapped_estimator_.predict_proba(X)
 
-    @if_delegate_has_method(delegate='wrapped_estimator_')
+    @available_if('wrapped_estimator_')
     def predict_log_proba(self, X):
         return self.wrapped_estimator_.predict_log_proba(X)
 
-    @if_delegate_has_method(delegate='wrapped_estimator_')
+    @available_if('wrapped_estimator_')
     def decision_function(self, X):
         return self.wrapped_estimator_.decision_function(X)
 
